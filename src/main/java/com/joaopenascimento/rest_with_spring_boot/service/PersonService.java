@@ -46,6 +46,8 @@ public class PersonService {
         person.setFirstName(dto.getFirstName());
         person.setLastName(dto.getLastName());
         person.setAddress(dto.getAddress());
+        person.setPosition(dto.getPosition());
+        person.setSalary(dto.getSalary());
         person.setAge(dto.getAge());
 
         return PersonMapper.toResponseDTO(repository.save(person));

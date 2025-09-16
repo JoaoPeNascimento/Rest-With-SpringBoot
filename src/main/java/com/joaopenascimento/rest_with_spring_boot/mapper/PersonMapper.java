@@ -12,6 +12,8 @@ public class PersonMapper {
         person.setLastName(dto.getLastName());
         person.setAddress(dto.getAddress());
         person.setAge(dto.getAge());
+        person.setPosition(dto.getPosition());
+        person.setSalary(dto.getSalary());
         return person;
     };
 
@@ -21,7 +23,8 @@ public class PersonMapper {
                 person.getFirstName(),
                 person.getLastName(),
                 person.getAge(),
-                person.getAddress()
-        );
+                person.getAddress(),
+                person.getSalary(),
+                person.getPosition());
     }
 }

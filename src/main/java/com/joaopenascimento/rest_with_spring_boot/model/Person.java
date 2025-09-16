@@ -15,14 +15,20 @@ public class Person {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(name = "first_name", nullable = false, length = 80)
+    @Column(name = "first_name", nullable = false, length = 20)
     private String firstName;
 
-    @Column(name = "last_name", nullable = false, length = 80)
+    @Column(name = "last_name", nullable = false, length = 20)
     private String lastName;
 
     @Column(nullable = false, length = 80)
     private String address;
+
+    @Column(nullable = false, length = 10)
+    private double salary;
+
+    @Column(nullable = false, length = 20)
+    private String position;
 
     @Column(nullable = false, length = 2)
     private int age;
@@ -35,11 +41,11 @@ public class Person {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Person person = (Person) o;
-        return age == person.age && Objects.equals(id, person.id) && Objects.equals(firstName, person.firstName) && Objects.equals(lastName, person.lastName) && Objects.equals(address, person.address);
+        return age == person.age && Objects.equals(id, person.id) && Objects.equals(firstName, person.firstName) && Objects.equals(lastName, person.lastName) && Objects.equals(address, person.address) && Objects.equals(salary, person.salary) && Objects.equals(position, person.position);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, firstName, lastName, address, age);
+        return Objects.hash(id, firstName, lastName, address, salary, position, age);
     }
 }
