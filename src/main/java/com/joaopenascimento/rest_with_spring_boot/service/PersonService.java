@@ -6,8 +6,12 @@ import com.joaopenascimento.rest_with_spring_boot.mapper.PersonMapper;
 import com.joaopenascimento.rest_with_spring_boot.model.Person;
 import com.joaopenascimento.rest_with_spring_boot.repository.PersonRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
+import org.springframework.web.server.ResponseStatusException;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -26,22 +30,30 @@ public class PersonService {
         return PersonMapper.toResponseDTO(entity);
     }
 
-    public List<PersonResponseDTO> findAll() {
-        return repository.findAll()
+    public ResponseEntity<?> findAll() {
+        List<PersonResponseDTO> people = repository.findAll()
                 .stream()
                 .map(PersonMapper::toResponseDTO)
                 .collect(Collectors.toList());
+
+        if (people.isEmpty()) {
+            return ResponseEntity
+                    .status(404)
+                    .body("Nenhuma pessoa cadastrada");
+        }
+
+        return ResponseEntity.ok(people);
     }
 
     public PersonResponseDTO findById(Long id) {
         return repository.findById(id)
                 .map(PersonMapper::toResponseDTO)
-                .orElseThrow(() -> new RuntimeException("Person not found"));
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Pessoa de id: " + id + " não encontrada."));
     }
 
     public PersonResponseDTO update(Long id, PersonRequestDTO dto) {
         Person person = repository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Person not Found"));
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Pessoa de id: " + id + " não encontrada."));
 
         person.setFirstName(dto.getFirstName());
         person.setLastName(dto.getLastName());
@@ -55,7 +67,7 @@ public class PersonService {
 
     public void delete(Long id) {
         Person person = repository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Person not Found"));
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Pessoa de id: " + id + " não encontrada."));
 
         repository.delete(person);
     }
