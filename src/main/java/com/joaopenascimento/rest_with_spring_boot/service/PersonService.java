@@ -4,10 +4,13 @@ import com.joaopenascimento.rest_with_spring_boot.dto.person.PersonRequestDTO;
 import com.joaopenascimento.rest_with_spring_boot.dto.person.PersonResponseDTO;
 import com.joaopenascimento.rest_with_spring_boot.mapper.PersonMapper;
 import com.joaopenascimento.rest_with_spring_boot.model.Person;
+import com.joaopenascimento.rest_with_spring_boot.model.User;
 import com.joaopenascimento.rest_with_spring_boot.repository.PersonRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 
@@ -26,20 +29,28 @@ public class PersonService {
     }
 
     public PersonResponseDTO create(PersonRequestDTO dto) {
-        Person entity = repository.save(PersonMapper.toEntity(dto));
-        return PersonMapper.toResponseDTO(entity);
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        User user = (User) auth.getPrincipal();
+        Long userId = user.getId();
+
+        Person entity = PersonMapper.toEntity(dto);
+        entity.setCompanyId(userId);
+
+        return PersonMapper.toResponseDTO(repository.save(entity));
     }
 
     public ResponseEntity<?> findAll() {
-        List<PersonResponseDTO> people = repository.findAll()
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        User user = (User) auth.getPrincipal();
+        Long userId = user.getId();
+
+        List<PersonResponseDTO> people = repository.findAllByCompanyId(userId)
                 .stream()
                 .map(PersonMapper::toResponseDTO)
                 .collect(Collectors.toList());
 
         if (people.isEmpty()) {
-            return ResponseEntity
-                    .status(404)
-                    .body("Nenhuma pessoa cadastrada");
+            return ResponseEntity.status(404).body("Nenhuma pessoa cadastrada");
         }
 
         return ResponseEntity.ok(people);

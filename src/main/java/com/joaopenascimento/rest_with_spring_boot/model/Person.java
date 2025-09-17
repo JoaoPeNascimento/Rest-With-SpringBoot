@@ -33,6 +33,9 @@ public class Person {
     @Column(nullable = false, length = 2)
     private int age;
 
+    @Column(name = "company_id", nullable = false)
+    private Long companyId;
+
     public Person() {
     }
 
