@@ -1,7 +1,7 @@
 package com.joaopenascimento.rest_with_spring_boot.mapper;
 
-import com.joaopenascimento.rest_with_spring_boot.dto.PersonRequestDTO;
-import com.joaopenascimento.rest_with_spring_boot.dto.PersonResponseDTO;
+import com.joaopenascimento.rest_with_spring_boot.dto.person.PersonRequestDTO;
+import com.joaopenascimento.rest_with_spring_boot.dto.person.PersonResponseDTO;
 import com.joaopenascimento.rest_with_spring_boot.model.Person;
 
 public class PersonMapper {

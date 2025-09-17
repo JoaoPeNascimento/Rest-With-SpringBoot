@@ -1,4 +1,4 @@
-package com.joaopenascimento.rest_with_spring_boot.dto;
+package com.joaopenascimento.rest_with_spring_boot.dto.person;
 
 import lombok.Getter;
 import lombok.Setter;

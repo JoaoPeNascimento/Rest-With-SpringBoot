@@ -1,7 +1,7 @@
 package com.joaopenascimento.rest_with_spring_boot.controller;
 
-import com.joaopenascimento.rest_with_spring_boot.dto.PersonRequestDTO;
-import com.joaopenascimento.rest_with_spring_boot.dto.PersonResponseDTO;
+import com.joaopenascimento.rest_with_spring_boot.dto.person.PersonRequestDTO;
+import com.joaopenascimento.rest_with_spring_boot.dto.person.PersonResponseDTO;
 import com.joaopenascimento.rest_with_spring_boot.service.PersonService;
 import org.springframework.web.bind.annotation.*;
 
