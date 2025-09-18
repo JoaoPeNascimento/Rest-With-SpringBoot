@@ -3,6 +3,7 @@ package com.joaopenascimento.rest_with_spring_boot.controller;
 import com.joaopenascimento.rest_with_spring_boot.dto.person.PersonRequestDTO;
 import com.joaopenascimento.rest_with_spring_boot.dto.person.PersonResponseDTO;
 import com.joaopenascimento.rest_with_spring_boot.service.PersonService;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -24,8 +25,8 @@ public class PersonController {
     }
 
     @GetMapping
-    public ResponseEntity<?> findAll() {
-        return service.findAll();
+    public ResponseEntity<?> findAll(Pageable pageable) {
+        return service.findAll(pageable);
     }
 
     @GetMapping("/{id}")

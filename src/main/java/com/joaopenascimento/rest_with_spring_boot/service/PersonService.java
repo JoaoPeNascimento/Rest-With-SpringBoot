@@ -7,6 +7,8 @@ import com.joaopenascimento.rest_with_spring_boot.model.Person;
 import com.joaopenascimento.rest_with_spring_boot.model.User;
 import com.joaopenascimento.rest_with_spring_boot.repository.PersonRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
@@ -39,15 +41,13 @@ public class PersonService {
         return PersonMapper.toResponseDTO(repository.save(entity));
     }
 
-    public ResponseEntity<?> findAll() {
+    public ResponseEntity<?> findAll(Pageable pageable) {
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         User user = (User) auth.getPrincipal();
         Long userId = user.getId();
 
-        List<PersonResponseDTO> people = repository.findAllByCompanyId(userId)
-                .stream()
-                .map(PersonMapper::toResponseDTO)
-                .collect(Collectors.toList());
+        Page<PersonResponseDTO> people = repository.findAllByCompanyId(userId, pageable)
+                                                                        .map(PersonMapper::toResponseDTO);
 
         if (people.isEmpty()) {
             return ResponseEntity.status(404).body("Nenhuma pessoa cadastrada");
